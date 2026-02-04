@@ -7,7 +7,7 @@ FROM maven:3.9.9-eclipse-temurin-17 AS builder
 WORKDIR /build
 
 # Copy Maven wrapper and project files
-COPY . .
+COPY src ./src
 
 # Build the fat JAR using Spring Boot plugin
 RUN ./mvnw clean package spring-boot:repackage -DskipTests
