@@ -10,7 +10,7 @@ WORKDIR /build
 COPY src ./src
 
 # Build the fat JAR using Spring Boot plugin
-RUN ./mvnw clean package spring-boot:repackage -DskipTests
+RUN mvn -q -DskipTests package
 
 # -------- Stage 2: Run the app --------
 FROM eclipse-temurin:17-jre
@@ -18,7 +18,7 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Copy the fat JAR from builder stage
-COPY --from=builder /build/target/payment-backend-*.jar app.jar
+COPY --from=builder /build/target/*.jar app.jar
 
 EXPOSE 8080
 
