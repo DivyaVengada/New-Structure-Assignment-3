@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: paymentdb
+      POSTGRES_USER: paymentuser
+      POSTGRES_PASSWORD: paymentpass
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/paymentdb
+      SPRING_DATASOURCE_USERNAME: paymentuser
+      SPRING_DATASOURCE_PASSWORD: paymentpass
+      AUTHORIZENET_API_LOGIN_ID: 64g6g5NndvYM
+      AUTHORIZENET_TRANSACTION_KEY: 37ZCjSWq3k6k934g
+      AUTHORIZENET_ENVIRONMENT: SANDBOX
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+  simulator:
+    build: ./simulator
+    depends_on:
+      - app
+    environment:
+      BASE_URL: http://app:8080/api
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+

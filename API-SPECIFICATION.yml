@@ -1,0 +1,230 @@
+
+openapi: 3.0.0
+info:
+  title: Payment Backend API
+  version: 1.0.0
+paths:
+  /api/payment/purchase:
+    post:
+      summary: Purchase (auth + capture)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseResponse'
+  /api/payment/authorize:
+    post:
+      summary: Authorize payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizeResponse'
+  /api/payment/capture:
+    post:
+      summary: Capture funds
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaptureResponse'
+  /api/payment/cancel:
+    post:
+      summary: Cancel transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelResponse'
+  /api/payment/refund:
+    post:
+      summary: Refund transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+  /api/subscription/create:
+    post:
+      summary: Create subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+  /api/webhook/event:
+    post:
+      summary: Handle webhook event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEventRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEventResponse'
+components:
+  schemas:
+    PurchaseRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        paymentMethodNonce:
+          type: string
+    PurchaseResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    AuthorizeRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        paymentMethodNonce:
+          type: string
+    AuthorizeResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    CaptureRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+        amount:
+          type: number
+    CaptureResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    CancelRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+    CancelResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    RefundRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+        amount:
+          type: number
+    RefundResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    SubscriptionRequest:
+      type: object
+      properties:
+        monthlyAmount:
+          type: number
+    SubscriptionResponse:
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    WebhookEventRequest:
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventType:
+          type: string
+        payload:
+          type: string
+    WebhookEventResponse:
+      type: object
+      properties:
+        eventId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
