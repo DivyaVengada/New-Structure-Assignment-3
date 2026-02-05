@@ -6,11 +6,13 @@ FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
 WORKDIR /build
 
+COPY pom.xml .
+
 # Copy Maven wrapper and project files
 COPY src ./src
 
 # Build the fat JAR using Spring Boot plugin
-RUN mvn -q -DskipTests package
+RUN mvn clean package spring-boot:repackage -DskipTests
 
 # -------- Stage 2: Run the app --------
 FROM eclipse-temurin:17-jre
